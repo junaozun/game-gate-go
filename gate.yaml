@@ -1,0 +1,21 @@
+gate:
+  machine_id: 2 # 唯一id，用于雪花算法
+
+logic:
+  ip: 0.0.0.0 # 对场景服务器监听的IP和端口号
+  thread: 6 # io thread num
+  max_read_msg_size: 65536
+  max_write_msg_size: 65536
+
+client:
+  ip: 0.0.0.0 # 对客户端监听的IP和端口号
+  thread: 10 # io thread num
+  max_read_msg_size: 65536
+  max_write_msg_size: 65536
+  write_compress_limit: 65536
+  read_timeout: 32 # 客户端超时秒
+
+etcd:
+  server_address: 10.18.98.113:2379
+  ttl: 10
+  key: /game/gateway/
