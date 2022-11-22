@@ -1,9 +1,15 @@
-package config
+package gateway
 
-type GatewayConfig struct {
+type GateServerConfig struct {
+	Gate   GateConfig   `yaml:"gate"`
 	Logic  LogicConfig  `yaml:"logic"`
 	Client ClientConfig `yaml:"client"`
 	Etcd   Etcd         `yaml:"etcd"`
+}
+
+type GateConfig struct {
+	MachineId   uint64 `yaml:"machine_id"`
+	NetworkCard string `yaml:"network_card"`
 }
 
 type Etcd struct {
@@ -13,14 +19,14 @@ type Etcd struct {
 }
 
 type LogicConfig struct {
-	Ip              string `yaml:"ip"`
+	Port            string `yaml:"port"`
 	Thread          int    `yaml:"thread"`
 	MaxReadMsgSize  int    `yaml:"max_read_msg_size"`
 	MaxWriteMsgSize int    `yaml:"max_write_msg_size"`
 }
 
 type ClientConfig struct {
-	IP                 string `yaml:"ip"`
+	Port               string `yaml:"port"`
 	Thread             int    `yaml:"thread"`
 	MaxReadMsgSize     int    `yaml:"max_read_msg_size"`
 	MaxWriteMsgSize    int    `yaml:"max_write_msg_size"`

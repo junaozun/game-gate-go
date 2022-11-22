@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package message;
+
+option go_package="./;message";
+
+enum RET {
+  RET_ERROR = 0; //错误 提示文字：错误
+  RET_OK = 1; //OK 提示文字：成功
+  RET_SERVER_MAINTAIN = 2; //服务器没有开启(服务器进程没有开启) 提示文字：服务器暂未开放
+}
+
+enum ID {
+  MSG_NONE = 0;
+  MSG_LOGIC_MIN = 10000;
+  MSG_LOGIC_MAX = 30000;
+  MSG_BEGIN = 10001;
+  MSG_END = 10999;
+
+  MSG_C2G_Login = 10002;
+  MSG_G2C_Login = 10003;
+  MSG_C2G_Create = 10004;
+  MSG_G2C_Create = 10005;
+  MSG_C2G_Offline = 10006;
+  MSG_C2G_KeepAlive = 10007; // Client->Gateway保持连接
+  MSG_G2C_KeepAlive = 10008; // Logic->Gateway保持连接
+  MSG_C2G_SayHi = 10009; // Gateway->Logic 告诉Logic自己的GatewayID
+  MSG_G2C_SayHi = 10010; // Logic->Gateway 向Gateway返回Logic注册服务器ID(可多个)
+  MSG_G2C_Broadcast = 10011;
+  MSG_G2C_Offline = 10012;
+}
+
+// C2G  Client->Gateway
+// G2C  Gateway->Client
+
+// 客户端登陆消息
+message C2G_Login {
+  uint64 server_id = 1; // 服务器id
+  bytes data = 2; // data
+}
+
+// 返回客户端登陆消息
+message G2C_Login {
+  RET ret = 1; // 返回码
+  uint64 uid = 2; // 玩家id
+  bytes data = 3; // data
+}
+
+// 下线消息
+message C2G_Offline {
+}
+
+// gateway向server发送连接成功消息
+message C2G_SayHi {
+}
+
+// server向gateway发送server的id信息
+message G2C_SayHi {
+  uint64 id = 1; //current已经包含了这个id，在go的实现中不要这个了
+  repeated uint64 current = 2;
+  repeated uint64 del = 3;
+}
+
+// 客户端发送心跳消息
+message C2G_KeepAlive {
+}
+
+// 返回客户端发送心跳消息
+message G2C_KeepAlive {
+}
+
+//广播消息 ids是要广播的人的集合，如果集合为空表示向全部在线的人发送
+message G2C_Broadcast {
+  repeated uint64 ids = 1;
+  uint32 cmd = 2;
+  bytes data = 3;
+}
+
+// 
+message G2C_Offline {
+}
